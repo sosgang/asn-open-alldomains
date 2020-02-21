@@ -1,1 +1,1 @@
-# asn-open-alldomains
+# asn-open-multidomain
