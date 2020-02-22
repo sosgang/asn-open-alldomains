@@ -47,7 +47,4 @@ Infine viene verificato se il candidato superi o meno i valori soglia riportati 
 
 ## TO DO
 
-- Ottenere i dati reali
-- Ottenere un file TSV dei candidati strutturato come descritto sopra
-- Implementare l'analisi dei risultati per settore
-- Implementare la visualizzazione di grafici
+- Verificare validità risultati
