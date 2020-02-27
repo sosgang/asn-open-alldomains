@@ -119,8 +119,10 @@ def crossData(candidates, citations, publicationDates):
                 if (sessionDate - int(publicationDates[doi])) < timeGap and (sessionDate - int(publicationDates[doi])) >= 0:
                     if doi in citations:
                         numberOfCitations = numberOfCitations + \
-                            int(citations[doi])
-                        citationsList.append(int(citations[doi]))
+                            int(citations[doi][int(candidates[candidate]['session'])][int(
+                                candidates[candidate]['level'])])
+                        citationsList.append(int(citations[doi][int(candidates[candidate]['session'])][int(
+                                candidates[candidate]['level'])]))
         citationsList = sorted(citationsList, reverse=True)
         hIndex = 0
         for i, citation in enumerate(citationsList):

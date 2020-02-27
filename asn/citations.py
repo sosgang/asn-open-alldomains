@@ -17,32 +17,37 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
     dois = {}
     with open(filename, encoding='utf-8') as document:
         reader = csv.reader(document, delimiter=",")
-        noDate = 0
-        allDois = 0
         for row in reader:
             doi = row[2]
             doi = doi.lower()
             if doi in candidatesDois:
-                allDois = allDois + 1
-                sessionDate = SESSIONS_MAP[6][int(
-                    candidatesDois[doi]['session'])]
-                sessionDate = datetime.strptime(sessionDate, '%Y-%m-%d').date()
-                timeGap = TIME_GAPS['citations'][int(
-                    candidatesDois[doi]['level'])]
-                try:
-                    if len(row[3].split('-')) == 3:
-                        creation = datetime.strptime(row[3], '%Y-%m-%d').date()
-                    elif len(row[3].split('-')) == 2:
-                        creation = datetime.strptime(row[3], '%Y-%m').date()
-                    else:
-                        creation = datetime.strptime(row[3], '%Y').date()
-                    if creation < sessionDate and (int(sessionDate.year)-int(creation.year)) < timeGap:
-                        if doi in dois:
-                            dois[doi] = dois[doi] + 1
+                if not doi in dois:
+                    dois[doi] = {}
+                    for session in SESSIONS_MAP[6]:
+                        dois[doi][session] = {
+                            1: 0,
+                            2: 0
+                        }
+                for session in SESSIONS_MAP[6]:
+                    sessionDate = SESSIONS_MAP[6][session]
+                    sessionDate = datetime.strptime(
+                        sessionDate, '%Y-%m-%d').date()
+                    firstLevelTimeGap = TIME_GAPS['citations'][1]
+                    secondLevelTimeGap = TIME_GAPS['citations'][2]
+                    try:
+                        if len(row[3].split('-')) == 3:
+                            creation = datetime.strptime(
+                                row[3], '%Y-%m-%d').date()
+                        elif len(row[3].split('-')) == 2:
+                            creation = datetime.strptime(
+                                row[3], '%Y-%m').date()
                         else:
-                            dois[doi] = 1
-                except:
-                    noDate = noDate + 1
-                    pass
+                            creation = datetime.strptime(row[3], '%Y').date()
+                        if creation < sessionDate and (int(sessionDate.year)-int(creation.year)) < secondLevelTimeGap:
+                            dois[doi][session][1] = dois[doi][session][1] + 1
+                            dois[doi][session][2] = dois[doi][session][2] + 1
+                        elif creation < sessionDate and (int(sessionDate.year)-int(creation.year)) < firstLevelTimeGap:
+                            dois[doi][session][1] = dois[doi][session][1] + 1
+                    except:
+                        pass
     asn.createCitationsCSV(dois, citationsCSV, 0)
-    print(noDate, ' DOIS WITHOUT DATE ON ', allDois, ' DOIS')

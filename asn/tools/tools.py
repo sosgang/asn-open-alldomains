@@ -1,5 +1,6 @@
 import csv
 import ast
+import configurations
 
 
 def checkFileIsPresent(filename):
@@ -43,11 +44,18 @@ def createCSV(data, filename, keys, calculatedRows):
 def createCitationsCSV(data, filename, isNew):
     with open(filename, 'a', newline='', encoding='utf-8') as document:
         writer = csv.writer(document)
+        SESSIONS_MAP = configurations.SESSIONS_MAP
         if isNew == 0:
-            writer.writerow(['doi', 'citations'])
+            headerRow = ['doi']
+            for session in SESSIONS_MAP[6]:
+                headerRow.append("session-"+str(session))
+            writer.writerow(headerRow)
         for doi in data:
-            row = [doi, data[doi]]
-            writer.writerow(row)
+            dataRow = [doi]
+            for session in SESSIONS_MAP[6]:
+                dataRow.append(str(data[doi][session][1]) +
+                               "/" + str(data[doi][session][2]))
+            writer.writerow(dataRow)
 
 
 def createPublicationDatesCSV(data, filename):
@@ -82,6 +90,22 @@ def createSimpleDict(filename):
         next(reader)
         for row in reader:
             data[row[0]] = row[1]
+    return data
+
+
+def createCitationsDict(filename):
+    data = {}
+    SESSIONS_MAP = configurations.SESSIONS_MAP
+    with open(filename, encoding='utf-8') as document:
+        reader = csv.reader(document, delimiter=",")
+        next(reader)
+        for row in reader:
+            data[row[0]] = {}
+            for session in SESSIONS_MAP[6]:
+                data[row[0]][session] = {
+                    1: row[session].split("/")[0],
+                    2: row[session].split("/")[1]
+                }
     return data
 
 
@@ -131,4 +155,3 @@ def getAllSubjects(crossDataCSV):
             if not row[3] in subjects:
                 subjects.add(row[3])
     return subjects
-

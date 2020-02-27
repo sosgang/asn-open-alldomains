@@ -53,7 +53,7 @@ if __name__ == '__main__':
             if asn.checkFileIsPresent(CROSS_DATA):
                 os.remove(CROSS_DATA)
             candidates = asn.createDict(CANDIDATES_OUT)
-            citations = asn.createSimpleDict(CITATIONS_OUT)
+            citations = asn.createCitationsDict(CITATIONS_OUT)
             publicationDates = asn.createSimpleDict(PUBLICATION_DATES)
             crossData = asn.crossData(candidates, citations, publicationDates)
             candidates = {}
