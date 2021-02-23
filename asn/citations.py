@@ -1,5 +1,6 @@
 import csv
 import asn
+import os
 from datetime import datetime
 import configurations
 
@@ -14,13 +15,31 @@ TIME_GAPS = configurations.TIME_GAPS
 # QUANDO L'ANALISI TERMINA VIENE CREATO UN CSV CONTENENTE I DATI DEL DIZIONARIO
 def analizeCociData(filename, citationsCSV, candidatesCSV):
     candidatesDois = asn.createCandidatesDoisDict(candidatesCSV)
+
     dois = {}
+
+    LIST_INCOMING = './data/LIST_ALL_INCOMING_CITATIONS.csv'
+
+    if asn.checkFileIsPresent(LIST_INCOMING):
+         os.remove(LIST_INCOMING)
+
     with open(filename, encoding='utf-8') as document:
         reader = csv.reader(document, delimiter=",")
+
         for row in reader:
             doi = row[2]
             doi = doi.lower()
             if doi in candidatesDois:
+
+                #debug: force saving all incoming citations for the candidate
+                found_incoming_cit_line = row[1] + "," + row[2] + "," + row[3]
+                print(found_incoming_cit_line)
+                log = open(LIST_INCOMING, 'a')
+                log.write(found_incoming_cit_line + "\n")
+                log.close();
+                #debug
+
+
                 if not doi in dois:
                     dois[doi] = {}
                     for session in SESSIONS_MAP[6]:
@@ -50,4 +69,5 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
                             dois[doi][session][1] = dois[doi][session][1] + 1
                     except:
                         pass
+
     asn.createCitationsCSV(dois, citationsCSV, 0)
