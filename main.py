@@ -5,6 +5,7 @@ import os
 import csv
 import configurations
 from multiprocessing import Pool, freeze_support
+from datetime import datetime
 
 CANDIDATES_IN = configurations.CANDIDATES_IN
 CANDIDATES_OUT = configurations.CANDIDATES_OUT
@@ -14,6 +15,8 @@ CROSS_DATA = configurations.CROSS_DATA
 REAL_DATA = configurations.REAL_DATA
 PUBLICATION_DATES = configurations.PUBLICATION_DATES
 SUBJECTS = configurations.SUBJECTS
+
+startTime = datetime.now()
 
 if __name__ == '__main__':
     freeze_support()
@@ -163,3 +166,5 @@ if __name__ == '__main__':
                               resultsAll[2]['overall'] / (len(subjectsFinal) - candidatesZero), resultsAll[2]['articles'] / (len(subjectsFinal) - candidatesZero), resultsAll[2]['citations'] / (len(subjectsFinal) - candidatesZero), resultsAll[2]['hindex'] / (len(subjectsFinal) - candidatesZero), 'GLOBAL')
         asn.makeHistogramAllLevel1(subjectsOverall)
         asn.makeHistogramAllLevel2(subjectsOverall)
+
+print("Execution time:", datetime.now() - startTime)
