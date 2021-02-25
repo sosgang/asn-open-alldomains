@@ -12,7 +12,6 @@ LIST_INCOMING = './data/LIST_ALL_INCOMING_CITATIONS.csv'
 LIST_INCOMING_BY_SESSION_PREF = './data/LIST_INCOMING_SESSION_'
 
 def logCountedCitation(filename, citation):
-    print(citation)
     log = open(filename, 'a')
     log.write(citation + "\n")
     log.close();
@@ -27,9 +26,6 @@ def cleanCitationsLogs():
     for session in SESSIONS_MAP[6]:
         for i in range(1, 3):
             INCOMING_IN_SESSION = getCitationLogFilename(session, i)
-
-            print(INCOMING_IN_SESSION)
-
             if asn.checkFileIsPresent(INCOMING_IN_SESSION):
                 os.remove(INCOMING_IN_SESSION)
 
@@ -54,9 +50,11 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
             if doi in candidatesDois:
 
                 #debug: force saving all incoming citations for the candidate
-                found_incoming_cit_line = row[1] + "," + row[2] + "," + row[3]
 
                 # debug: log citations
+
+                found_incoming_cit_line = row[1] + "," + row[2] + "," + row[3]
+                print(found_incoming_cit_line)
                 logCountedCitation(LIST_INCOMING, found_incoming_cit_line)
 
 #                print(found_incoming_cit_line)
