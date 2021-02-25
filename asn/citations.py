@@ -8,6 +8,31 @@ import configurations
 SESSIONS_MAP = configurations.SESSIONS_MAP
 TIME_GAPS = configurations.TIME_GAPS
 
+LIST_INCOMING = './data/LIST_ALL_INCOMING_CITATIONS.csv'
+LIST_INCOMING_BY_SESSION_PREF = './data/LIST_INCOMING_SESSION_'
+
+def logCountedCitation(filename, citation):
+    print(citation)
+    log = open(filename, 'a')
+    log.write(citation + "\n")
+    log.close();
+
+def getCitationLogFilename(session, level):
+    return LIST_INCOMING_BY_SESSION_PREF + str(session) + '_LEVEL_' + str(level) + '.csv'
+
+def cleanCitationsLogs():
+    if asn.checkFileIsPresent(LIST_INCOMING):
+         os.remove(LIST_INCOMING)
+
+    for session in SESSIONS_MAP[6]:
+        for i in range(1, 3):
+            INCOMING_IN_SESSION = getCitationLogFilename(session, i)
+
+            print(INCOMING_IN_SESSION)
+
+            if asn.checkFileIsPresent(INCOMING_IN_SESSION):
+                os.remove(INCOMING_IN_SESSION)
+
 
 # ANALISI DEI DATI COCI
 # VIENE COSTRUITO UN DIZIONARIO CONTENENTE {DOI: NUMERO_DI_CITAZIONI_RICEVUTE}
@@ -18,10 +43,7 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
 
     dois = {}
 
-    LIST_INCOMING = './data/LIST_ALL_INCOMING_CITATIONS.csv'
-
-    if asn.checkFileIsPresent(LIST_INCOMING):
-         os.remove(LIST_INCOMING)
+    cleanCitationsLogs()
 
     with open(filename, encoding='utf-8') as document:
         reader = csv.reader(document, delimiter=",")
@@ -33,10 +55,14 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
 
                 #debug: force saving all incoming citations for the candidate
                 found_incoming_cit_line = row[1] + "," + row[2] + "," + row[3]
-                print(found_incoming_cit_line)
-                log = open(LIST_INCOMING, 'a')
-                log.write(found_incoming_cit_line + "\n")
-                log.close();
+
+                # debug: log citations
+                logCountedCitation(LIST_INCOMING, found_incoming_cit_line)
+
+#                print(found_incoming_cit_line)
+#                log = open(LIST_INCOMING, 'a')
+#                log.write(found_incoming_cit_line + "\n")
+#                log.close();
                 #debug
 
 
@@ -65,9 +91,16 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
                         if creation < sessionDate and (int(sessionDate.year)-int(creation.year)) < secondLevelTimeGap:
                             dois[doi][session][1] = dois[doi][session][1] + 1
                             dois[doi][session][2] = dois[doi][session][2] + 1
+                            # debug: log citations
+                            logCountedCitation(getCitationLogFilename(session,1), found_incoming_cit_line)
+                            logCountedCitation(getCitationLogFilename(session,2), found_incoming_cit_line)
+
                         elif creation < sessionDate and (int(sessionDate.year)-int(creation.year)) < firstLevelTimeGap:
                             dois[doi][session][1] = dois[doi][session][1] + 1
+                            # debug: log citations
+                            logCountedCitation(getCitationLogFilename(session,1), found_incoming_cit_line)
                     except:
                         pass
 
+    print(dois)
     asn.createCitationsCSV(dois, citationsCSV, 0)
