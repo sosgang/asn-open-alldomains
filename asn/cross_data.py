@@ -113,6 +113,8 @@ def crossData(candidates, citations, publicationDates):
             if doi in publicationDates:  # VERIFICO CHE SIA UN DOI TEMPORALMENTE VALIDO
                 if (sessionDate - int(publicationDates[doi])) < timeGap and (sessionDate - int(publicationDates[doi])) >= 0:
                     articles = articles + 1
+
+        """
         for doi in dois:
             timeGap = TIME_GAPS['citations'][candidateLevel]
             if doi in publicationDates:  # VERIFICO CHE SIA UN DOI TEMPORALMENTE VALIDO
@@ -123,6 +125,17 @@ def crossData(candidates, citations, publicationDates):
                                 candidates[candidate]['level'])])
                         citationsList.append(int(citations[doi][int(candidates[candidate]['session'])][int(
                                 candidates[candidate]['level'])]))
+        """
+
+        for doi in dois:
+            print("\n\nDOI: " + doi)
+            if doi in citations:
+                numberOfCitations = numberOfCitations + \
+                            int(citations[doi][int(candidates[candidate]['session'])][int(
+                                candidates[candidate]['level'])])
+                citationsList.append(int(citations[doi][int(candidates[candidate]['session'])][int(
+                                candidates[candidate]['level'])]))
+
         citationsList = sorted(citationsList, reverse=True)
         hIndex = 0
         for i, citation in enumerate(citationsList):
