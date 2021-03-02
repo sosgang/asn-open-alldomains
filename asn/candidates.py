@@ -60,7 +60,7 @@ def cleanPublicationCSV(filename):
     publications = {}
     with open(filename, encoding='utf-8') as document:
         reader = csv.reader(document, delimiter=",")
-        #next(reader)
+        next(reader)
         for row in reader:
             if not row[0] in publications:
                 publications[row[0]] = row[1]
