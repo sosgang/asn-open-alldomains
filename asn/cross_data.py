@@ -114,6 +114,7 @@ def crossData(candidates, citations, publicationDates):
                 if (sessionDate - int(publicationDates[doi])) < timeGap and (sessionDate - int(publicationDates[doi])) >= 0:
                     articles = articles + 1
 
+        # filter on temporal windows
         """
         for doi in dois:
             timeGap = TIME_GAPS['citations'][candidateLevel]
@@ -127,8 +128,8 @@ def crossData(candidates, citations, publicationDates):
                                 candidates[candidate]['level'])]))
         """
 
+        # no filter on temporal windows
         for doi in dois:
-            print("\n\nDOI: " + doi)
             if doi in citations:
                 numberOfCitations = numberOfCitations + \
                             int(citations[doi][int(candidates[candidate]['session'])][int(
