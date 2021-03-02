@@ -23,6 +23,12 @@ if __name__ == '__main__':
     choice = asn.mainMenu()
     if choice == 1:
         if asn.checkFileIsPresent(CANDIDATES_IN):
+
+
+            #patch to add header to the publication_dates file
+            if not asn.checkFileIsPresent(PUBLICATION_DATES):
+                asn.createCSV({}, PUBLICATION_DATES, ["doi","date"], 0)
+
             calculatedRows = 0
             log = open('./data/tmp/log.txt', 'a')
             log.write('GENERATING CANDIDATES\n')

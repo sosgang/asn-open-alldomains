@@ -73,6 +73,8 @@ def cleanPublicationCSV(filename):
     shutil.copyfile(filename, './data/tmp/BACKUP_PUBLICATION_DATES.csv')
     os.remove(filename)
     try:
+        #patch to add header to the publication_dates file
+        asn.createCSV({}, filename, ["doi","date"], 0)
         asn.createPublicationDatesCSV(publications, filename)
     except:
         log = open('./data/tmp/log.txt', 'a')
