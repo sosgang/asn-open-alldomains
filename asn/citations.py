@@ -83,13 +83,13 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
                             dois[doi][session][1] = dois[doi][session][1] + 1
                             dois[doi][session][2] = dois[doi][session][2] + 1
                             # debug: log citations
-                            logCountedCitation(getCitationLogFilename(session,1), found_incoming_cit_line)
-                            logCountedCitation(getCitationLogFilename(session,2), found_incoming_cit_line)
+                            #logCountedCitation(getCitationLogFilename(session,1), found_incoming_cit_line)
+                            #logCountedCitation(getCitationLogFilename(session,2), found_incoming_cit_line)
 
                         elif creation < sessionDate and (int(sessionDate.year)-int(creation.year)) < firstLevelTimeGap:
                             dois[doi][session][1] = dois[doi][session][1] + 1
                             # debug: log citations
-                            logCountedCitation(getCitationLogFilename(session,1), found_incoming_cit_line)
+                            #logCountedCitation(getCitationLogFilename(session,1), found_incoming_cit_line)
                     except:
                         pass
 
