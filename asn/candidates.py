@@ -237,6 +237,7 @@ def formatData(filename, calculatedRows, candidatesCSV, publicationDatesCSV, cit
         candidateIndex = 0
         doneRows = calculatedRows + 1
         for row in reader:
+            print(row[4])
             if row[8] != '' and row[13] != '':
                 session = row[0]
                 level = row[1]
