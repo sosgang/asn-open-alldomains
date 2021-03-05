@@ -264,7 +264,7 @@ def formatData(filename, calculatedRows, candidatesCSV, publicationDatesCSV, cit
                 results = []
                 authors = {}
                 authorsIndex = 0
-                with Pool(processes=8) as pool:
+                with Pool(processes=32) as pool:
                     results = pool.map(checkDoiJournalArticle, doisArray)
                 for elem in results:
                     journal = elem[0]
