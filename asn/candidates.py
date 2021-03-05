@@ -177,6 +177,7 @@ def checkDoiJournalArticle(doi):
     author = []
     try:
         data = works.doi(doi)
+        print(doi)
         if 'type' in data:
             if data['type'] == 'journal-article':
                 isJournal = doi
@@ -277,7 +278,10 @@ def formatData(filename, calculatedRows, candidatesCSV, publicationDatesCSV, cit
                     authors[authorsIndex] = author
                     authorsIndex = authorsIndex + 1
                 candidateName = findCandidateName(authors)
+                '''
+                # no more controls on DBLP
                 dblp = checkAuthorDBLP(candidateName)
+
                 for doi in doisArray:
                     doi = doi.lower()
                     if doi in dblp:
@@ -286,6 +290,7 @@ def formatData(filename, calculatedRows, candidatesCSV, publicationDatesCSV, cit
                                 journalDois.append(doi)
                             if not doi in publicationDates:
                                 publicationDates[doi] = dblp[doi]['date']
+                '''
                 if len(journalDois) > 0 or len(doisArray) > 0:
                     candidates[candidateIndex] = {
                         'name': candidateName, 'session': session, 'level': level, 'subject': subject, 'id': candidateId, 'journal_dois': journalDois, 'dois': dois, 'real_articles': realData['articles'], 'real_citations': realData['citations'], 'real_hindex': realData['hindex'], 'threshold_articles': threshold['articles'], 'threshold_citations': threshold['citations'], 'threshold_hindex': threshold['hindex']}
