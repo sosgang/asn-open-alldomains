@@ -177,7 +177,6 @@ def checkDoiJournalArticle(doi):
     author = []
     try:
         data = works.doi(doi)
-        print(doi)
         if 'type' in data:
             if data['type'] == 'journal-article':
                 isJournal = doi

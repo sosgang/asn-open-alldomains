@@ -53,16 +53,9 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
 
                 # debug: log citations
 
-                found_incoming_cit_line = row[1] + "," + row[2] + "," + row[3]
-                print(found_incoming_cit_line)
-                logCountedCitation(LIST_INCOMING, found_incoming_cit_line)
-
-#                print(found_incoming_cit_line)
-#                log = open(LIST_INCOMING, 'a')
-#                log.write(found_incoming_cit_line + "\n")
-#                log.close();
-                #debug
-
+                #found_incoming_cit_line = row[1] + "," + row[2] + "," + row[3]
+                #print(found_incoming_cit_line)
+                #logCountedCitation(LIST_INCOMING, found_incoming_cit_line)
 
                 if not doi in dois:
                     dois[doi] = {}
@@ -100,5 +93,4 @@ def analizeCociData(filename, citationsCSV, candidatesCSV):
                     except:
                         pass
 
-    print(dois)
     asn.createCitationsCSV(dois, citationsCSV, 0)
